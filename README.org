@@ -1,0 +1,31 @@
+#+title: Procare Photo Timestamper
+#+author: John Sigman
+* About
+
+This repository contains a simple script and instructions for downloading a single month's photos from the "Photos" gallery on the "Dashboard" pane of Procare Connect's online interface. It was created because of a change in Procare API in June 2023 which breaks [[JWally]]'s [[https://github.com/JWally/procare-media-downloader][procare-media-downloader]].
+
+Currently, this only supports downloading a single month's photos at once, unlike its predecessor. However, I find this suitable as I try to download all photos at each month's end anyways.
+
+* Instructions
+
+#+CAPTION: Go to the dashboard and click on "Photos/Videos"
+[[./images/dashboard_screenshot.png]]
+
+#+CAPTION: Select "Monthly", set the month, and scroll to the bottom of the gallery to load all the photos you'd like to download.
+[[./images/gallery_screenshot.png]]
+
+In a Chromium browser, from the toolbar click "View" > "Developer" > "JavaScript Console".
+
+Then either paste the code of [[./download.js][download.js]] directly into the console (recommended for safety), or (risky) paste
+
+```javascript
+fetch('https://raw.githubusercontent.com/jsigman/procare-media-scraper/main/download.js')
+  .then(res => res.text())
+  .then(code => eval(code));
+```
+
+And give the permission to your browser to download the images.
+
+* Timestamping
+
+Timestamping of photos is possible through the filenames of the downloaded images. However, because of an external dependency on ~exiftool~, right now this has to be run separately in python. See my implementation at [[https://github.com/jsigman/procare-photo-timestamper][here]].
