@@ -8,15 +8,17 @@ Currently, this only supports downloading a single month's photos at once, unlik
 
 * Instructions
 
-#+CAPTION: Go to the dashboard and click on "Photos/Videos"
-[[./images/dashboard_screenshot.png]]
+1) Go to the dashboard and click on "Photos/Videos"
+[[
+./images/dashboard_screenshot.png]]
 
-#+CAPTION: Select "Monthly", set the month, and scroll to the bottom of the gallery to load all the photos you'd like to download.
+2) Select "Monthly", set the month, and scroll to the bottom of the gallery to load all the photos you'd like to download.
+
 [[./images/gallery_screenshot.png]]
 
-In a Chromium browser, from the toolbar click "View" > "Developer" > "JavaScript Console".
+3) In a Chromium browser, from the toolbar click "View" > "Developer" > "JavaScript Console".
 
-Then either paste the code of [[./download.js][download.js]] directly into the console (recommended for safety), or (risky) paste
+4) Either paste the code of [[./download.js][download.js]] directly into the console (recommended for safety), or (risky) paste:
 
 ```javascript
 fetch('https://raw.githubusercontent.com/jsigman/procare-media-scraper/main/download.js')
