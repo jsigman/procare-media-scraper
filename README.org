@@ -9,8 +9,7 @@ Currently, this only supports downloading a single month's photos at once, unlik
 * Instructions
 
 1) Go to the dashboard and click on "Photos/Videos"
-[[
-./images/dashboard_screenshot.png]]
+[[./images/dashboard_screenshot.png]]
 
 2) Select "Monthly", set the month, and scroll to the bottom of the gallery to load all the photos you'd like to download.
 
