@@ -19,7 +19,7 @@ Currently, this only supports downloading a single month's photos at once, unlik
 
 4) Either paste the code of [[./download.js][download.js]] directly into the console (recommended for safety), or (risky) paste:
 
-```javascript
+```js
 fetch('https://raw.githubusercontent.com/jsigman/procare-media-scraper/main/download.js')
   .then(res => res.text())
   .then(code => eval(code));
