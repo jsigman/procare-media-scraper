@@ -2,21 +2,45 @@ var elements = document.querySelectorAll(".gallery__item-download");
 var delay = 0; // Delay counter
 
 elements.forEach(function (element) {
-  setTimeout(function () {
-    var imageUrl = element.getAttribute("download");
+    setTimeout(async function () {
+        // Extract the image URL
+        var imageUrl = element.getAttribute("href");
 
-    // Create a new download link element
-    var link = document.createElement("a");
-    link.href = imageUrl;
-    link.download = ""; // The file will be downloaded with its original name
+        // Extract timestamp from the URL query string
+        var timestampMatch = imageUrl.match(/(\d+)$/);
+        var unixSeconds = timestampMatch
+            ? parseInt(timestampMatch[1], 10)
+            : Math.floor(Date.now() / 1000); // Fallback to current time if no timestamp
 
-    // Trigger click event on the link
-    link.style.display = "none"; // Hide the link
-    document.body.appendChild(link); // Append to document
-    link.click(); // Simulate click
-    document.body.removeChild(link); // Clean up and remove the link
-  }, delay);
+        // Format the filename based on the timestamp
+        var formattedDate = new Date(unixSeconds * 1000)
+            .toISOString()
+            .replace(/[-:T]/g, "")
+            .slice(0, 15); // Format: YYYYMMDDHHMMSS
+        var filename = `img_${unixSeconds}_photo.jpg`;
 
-  // Increase the delay for the next download
-  delay += 1000; // 1 second delay between each download
+        try {
+            // Fetch the image data manually to bypass content-disposition headers
+            const response = await fetch(imageUrl);
+            const blob = await response.blob();
+
+            // Create and trigger the download using a Blob
+            const blobUrl = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = blobUrl;
+            link.download = filename; // Enforce timestamped filename
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            // Clean up
+            URL.revokeObjectURL(blobUrl);
+            console.log(`Downloaded: ${filename}`);
+        } catch (error) {
+            console.error(`Failed to download ${filename}:`, error);
+        }
+    }, delay);
+
+    // Increase the delay for the next download
+    delay += 1000; // 1-second delay between downloads
 });
