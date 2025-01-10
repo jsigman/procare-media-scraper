@@ -6,18 +6,24 @@ elements.forEach(function (element) {
         // Extract the image URL
         var imageUrl = element.getAttribute("href");
 
-        // Extract timestamp from the URL query string
+        // Extract the timestamp from the URL query string
         var timestampMatch = imageUrl.match(/(\d+)$/);
         var unixSeconds = timestampMatch
             ? parseInt(timestampMatch[1], 10)
             : Math.floor(Date.now() / 1000); // Fallback to current time if no timestamp
 
-        // Format the filename based on the timestamp
+        // Extract the original filename (UUID or other identifier) from the URL path
+        var originalFilenameMatch = imageUrl.match(/\/([^\/?]+)\.jpg/); // Matches the last part before .jpg
+        var originalFilename = originalFilenameMatch
+            ? originalFilenameMatch[1]
+            : "unknown"; // Fallback if no match
+
+        // Format the filename to include both original name and timestamp
         var formattedDate = new Date(unixSeconds * 1000)
             .toISOString()
             .replace(/[-:T]/g, "")
             .slice(0, 15); // Format: YYYYMMDDHHMMSS
-        var filename = `img_${unixSeconds}_photo.jpg`;
+        var filename = `${originalFilename}_img_${unixSeconds}_photo.jpg`;
 
         try {
             // Fetch the image data manually to bypass content-disposition headers
@@ -28,7 +34,7 @@ elements.forEach(function (element) {
             const blobUrl = URL.createObjectURL(blob);
             const link = document.createElement("a");
             link.href = blobUrl;
-            link.download = filename; // Enforce timestamped filename
+            link.download = filename; // Enforce unique filename
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
